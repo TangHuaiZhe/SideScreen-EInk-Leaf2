@@ -132,6 +132,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    func applicationDidBecomeActive(_ notification: Notification) {
+        // Privacy changes made in System Settings do not restart the app or
+        // deliver a dedicated callback. Refresh when the user comes back so
+        // the UI does not remain stuck on the launch-time result.
+        Task {
+            await checkPermissions(requestIfNeeded: false)
+        }
+    }
+
     @MainActor
     private func refreshStatusIndicators() {
         settings.adbInstalled = StatusDetector.adbInstalled()
@@ -375,7 +384,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
 
-    func checkPermissions() async {
+    func checkPermissions(requestIfNeeded: Bool = true) async {
         let version = ProcessInfo.processInfo.operatingSystemVersion
         debugLog("checkPermissions — macOS \(version.majorVersion).\(version.minorVersion).\(version.patchVersion)")
 
@@ -399,7 +408,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         } else {
             debugLog("Screen recording permission not granted yet")
-            CGRequestScreenCaptureAccess()
+            if requestIfNeeded {
+                CGRequestScreenCaptureAccess()
+            }
         }
 
         // Check Accessibility permission (required for touch/mouse injection)
@@ -558,6 +569,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         defer {
             Task { @MainActor [weak self] in self?.isStartingServer = false }
         }
+
+        // Do not trust a permission value cached at launch. macOS can update
+        // TCC while the app stays alive after the user visits System Settings.
+        await checkPermissions(requestIfNeeded: false)
         debugLog("🚀 startServer() invoked. Check permission: \(settings.hasScreenRecordingPermission)")
         guard settings.hasScreenRecordingPermission else {
             debugLog("❌ startServer aborted: Missing Screen Recording permission")
@@ -1218,7 +1233,10 @@ extension AppDelegate: NSMenuDelegate {
         toggle.target = self
         // Mirror the settings-window Start button: starting needs the Screen
         // Recording permission, stopping is always allowed.
-        toggle.isEnabled = settings.isRunning || settings.hasScreenRecordingPermission
+        // Keep Start actionable: startServer() performs a fresh permission
+        // check and can explain what is missing instead of trapping the user
+        // behind a stale launch-time permission value.
+        toggle.isEnabled = true
         menu.addItem(toggle)
 
         // Connection mode (switching while running restarts the server, same

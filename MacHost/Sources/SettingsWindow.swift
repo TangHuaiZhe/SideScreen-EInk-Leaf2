@@ -938,7 +938,6 @@ struct SettingsView: View {
                         .buttonStyle(.borderedProminent)
                         .tint(settings.isRunning ? .red : .accentColor)
                         .controlSize(.large)
-                        .disabled(!settings.hasScreenRecordingPermission)
 
                         if settings.isRunning {
                             HStack(spacing: 6) {
