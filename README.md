@@ -9,15 +9,15 @@
 <p><em>Turn a BOOX or Android e-ink reader into a readable macOS second display over USB-C</em></p>
 
 <p>
-  <img src="https://img.shields.io/github/v/release/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&label=version&color=blue" alt="Version">
-  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&color=34C759" alt="License">
+  <img src="https://img.shields.io/github/v/release/TangHuaiZhe/SideScreen-EInk-Leaf2?style=for-the-badge&label=version&color=blue" alt="Version">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/TangHuaiZhe/SideScreen-EInk-Leaf2?style=for-the-badge&color=34C759" alt="License">
   </a>
-  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/stargazers">
-    <img src="https://img.shields.io/github/stars/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&color=FF9500" alt="Stars">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/stargazers">
+    <img src="https://img.shields.io/github/stars/TangHuaiZhe/SideScreen-EInk-Leaf2?style=for-the-badge&color=FF9500" alt="Stars">
   </a>
-  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/releases">
-    <img src="https://img.shields.io/github/downloads/TangHuaiZhe/SideScreen-EInk/total?style=for-the-badge&color=8E44AD&label=downloads" alt="Downloads">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/releases">
+    <img src="https://img.shields.io/github/downloads/TangHuaiZhe/SideScreen-EInk-Leaf2/total?style=for-the-badge&color=8E44AD&label=downloads" alt="Downloads">
   </a>
 </p>
 
@@ -120,7 +120,7 @@ Run a Mac with no display of its own — a Mac Studio or Mini on the go, or a la
 
 ## Installation
 
-Download the latest release from [**GitHub Releases**](https://github.com/TangHuaiZhe/SideScreen-EInk/releases):
+Download the latest release from [**GitHub Releases**](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/releases):
 
 - **macOS**: Download `.dmg`, open it, drag Side Screen to Applications
 - **Android**: Download `.apk`, install on your tablet (enable "Unknown sources" if needed). Port forwarding is handled automatically by the Mac app.
@@ -148,7 +148,7 @@ Download the latest release from [**GitHub Releases**](https://github.com/TangHu
 <summary><strong>Build from source (for developers)</strong></summary>
 
 ```bash
-git clone https://github.com/TangHuaiZhe/SideScreen-EInk.git
+git clone https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2.git
 cd SideScreen
 
 # macOS
@@ -257,8 +257,8 @@ Grant Screen Recording permission: **System Preferences → Privacy & Security �
 Contributions are welcome!
 
 - ⭐ **Star** this repo to help others discover it
-- 🐛 **Report bugs** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk/issues)
-- 💡 **Suggest features** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk/issues)
+- 🐛 **Report bugs** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/issues)
+- 💡 **Suggest features** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/issues)
 - 🔧 **Submit PRs** — see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
@@ -289,6 +289,6 @@ If Side Screen is useful to you, consider supporting development:
 
 Made with ❤️ by **Tran Vuong Quoc Dat**
 
-[Report Bug](https://github.com/TangHuaiZhe/SideScreen-EInk/issues) · [Request Feature](https://github.com/TangHuaiZhe/SideScreen-EInk/issues) · [Discussions](https://github.com/TangHuaiZhe/SideScreen-EInk/discussions)
+[Report Bug](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/issues) · [Request Feature](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/issues) · [Discussions](https://github.com/TangHuaiZhe/SideScreen-EInk-Leaf2/discussions)
 
 </div>
