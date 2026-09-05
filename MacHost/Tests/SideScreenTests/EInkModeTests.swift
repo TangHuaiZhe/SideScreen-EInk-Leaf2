@@ -4,6 +4,7 @@ import CoreVideo
 
 final class EInkModeTests: XCTestCase {
     func testReadingProfileUsesLeafFriendlyStreamingSettings() {
+        XCTAssertEqual(EInkModeProfile.displayRefreshRate, 30)
         XCTAssertEqual(EInkModeProfile.frameRate, 15)
         XCTAssertEqual(EInkModeProfile.bitrateMbps, 20)
         XCTAssertEqual(EInkModeProfile.quality, "high")

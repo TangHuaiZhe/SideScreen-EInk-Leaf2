@@ -572,7 +572,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try virtualDisplayManager?.createDisplay(
                 width: size.width,
                 height: size.height,
-                refreshRate: settings.effectiveRefreshRate,
+                refreshRate: settings.effectiveDisplayRefreshRate,
                 hiDPI: settings.hiDPI,
                 name: "SideScreen"
             )

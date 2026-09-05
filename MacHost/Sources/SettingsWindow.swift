@@ -1355,6 +1355,11 @@ class DisplaySettings: ObservableObject {
         return gamingBoost ? 120 : refreshRate
     }
 
+    var effectiveDisplayRefreshRate: Int {
+        if eInkReadingMode { return EInkModeProfile.displayRefreshRate }
+        return effectiveRefreshRate
+    }
+
     var effectiveGamingBoost: Bool {
         return gamingBoost && !eInkReadingMode
     }

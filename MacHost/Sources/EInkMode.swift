@@ -2,6 +2,7 @@ import Foundation
 import CoreVideo
 
 enum EInkModeProfile {
+    static let displayRefreshRate = 30
     static let frameRate = 15
     static let bitrateMbps = 20
     static let quality = "high"
