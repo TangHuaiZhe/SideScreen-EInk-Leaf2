@@ -186,6 +186,29 @@ struct SettingsView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
+                        FrostedGroupBox(title: "E-Ink Reading Mode", icon: "book.pages") {
+                            VStack(alignment: .leading, spacing: 8) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text("Optimize for text reading")
+                                            .font(.system(size: 12, weight: .medium))
+                                        Text("Monochrome video, 15 Hz, High quality")
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    Spacer()
+                                    Toggle("", isOn: $settings.eInkReadingMode)
+                                        .labelsHidden()
+                                }
+
+                                if settings.eInkReadingMode {
+                                    Text("Use 1024 × 768 for comfortable text size. Touch remains independently configurable below.")
+                                        .font(.system(size: 10))
+                                        .foregroundColor(.green)
+                                }
+                            }
+                        }
+
                         // Display Configuration
                         FrostedGroupBox(title: "Display Configuration", icon: "display") {
                             VStack(alignment: .leading, spacing: 16) {
@@ -421,7 +444,7 @@ struct SettingsView: View {
                                         .font(.system(size: 11))
                                         .foregroundColor(.secondary)
                                     Spacer()
-                                    Text("\(settings.refreshRate) Hz")
+                                    Text("\(settings.effectiveRefreshRate) Hz")
                                         .font(.system(size: 11, weight: .medium))
                                 }
 
@@ -431,7 +454,7 @@ struct SettingsView: View {
                                             label: "\(rate)",
                                             value: rate,
                                             currentValue: settings.refreshRate,
-                                            disabled: false
+                                            disabled: settings.eInkReadingMode
                                         ) {
                                             settings.refreshRate = rate
                                         }
@@ -460,6 +483,7 @@ struct SettingsView: View {
                                         in: 15...120,
                                         step: 1
                                     )
+                                    .disabled(settings.eInkReadingMode)
                                 }
 
                                 if settings.refreshRate >= 90 {
@@ -622,6 +646,7 @@ struct SettingsView: View {
                                     Spacer()
                                     Toggle("", isOn: $settings.gamingBoost)
                                         .labelsHidden()
+                                        .disabled(settings.eInkReadingMode)
                                 }
 
                                 if settings.gamingBoost {
@@ -1188,6 +1213,9 @@ class DisplaySettings: ObservableObject {
     @Published var gamingBoost: Bool {
         didSet { save("gamingBoost", gamingBoost) }
     }
+    @Published var eInkReadingMode: Bool {
+        didSet { save("eInkReadingMode", eInkReadingMode) }
+    }
     @Published var port: UInt16 {
         didSet { save("port", Int(port)) }
     }
@@ -1246,12 +1274,13 @@ class DisplaySettings: ObservableObject {
     var onToggleServer: (() -> Void)?
 
     init() {
-        self.resolution = defaults.string(forKey: keyPrefix + "resolution") ?? "1920x1200"
-        self.refreshRate = defaults.object(forKey: keyPrefix + "refreshRate") as? Int ?? 60  // Default: 60 — balanced for most tablets. 120 may saturate high-res panel pipelines.
+        self.resolution = defaults.string(forKey: keyPrefix + "resolution") ?? "1024x768"
+        self.refreshRate = defaults.object(forKey: keyPrefix + "refreshRate") as? Int ?? 30
         self.hiDPI = defaults.bool(forKey: keyPrefix + "hiDPI")
-        self.bitrate = defaults.object(forKey: keyPrefix + "bitrate") as? Int ?? 1000  // Default: 1000 Mbps
-        self.quality = defaults.string(forKey: keyPrefix + "quality") ?? "ultralow"  // Default: fastest encoding
+        self.bitrate = defaults.object(forKey: keyPrefix + "bitrate") as? Int ?? EInkModeProfile.bitrateMbps
+        self.quality = defaults.string(forKey: keyPrefix + "quality") ?? EInkModeProfile.quality
         self.gamingBoost = defaults.bool(forKey: keyPrefix + "gamingBoost")
+        self.eInkReadingMode = defaults.object(forKey: keyPrefix + "eInkReadingMode") as? Bool ?? true
         // Default port 54321 (was 8888 in <=0.7.1; 8888 collides with jupyter/splunk/HP printers).
         // Existing users keep their saved value.
         self.port = UInt16(defaults.object(forKey: keyPrefix + "port") as? Int ?? 54321)
@@ -1312,15 +1341,22 @@ class DisplaySettings: ObservableObject {
     }
 
     var effectiveBitrate: Int {
+        if eInkReadingMode { return EInkModeProfile.bitrateMbps }
         return gamingBoost ? 1000 : bitrate
     }
 
     var effectiveQuality: String {
+        if eInkReadingMode { return EInkModeProfile.quality }
         return gamingBoost ? "ultralow" : quality
     }
 
     var effectiveRefreshRate: Int {
+        if eInkReadingMode { return EInkModeProfile.frameRate }
         return gamingBoost ? 120 : refreshRate
+    }
+
+    var effectiveGamingBoost: Bool {
+        return gamingBoost && !eInkReadingMode
     }
 
     func toggleServer() {
@@ -1328,19 +1364,20 @@ class DisplaySettings: ObservableObject {
     }
 
     func resetToDefaults() {
-        let keys = ["resolution", "refreshRate", "hiDPI", "bitrate", "quality",
+        let keys = ["resolution", "refreshRate", "hiDPI", "bitrate", "quality", "eInkReadingMode",
                     "gamingBoost", "port", "rotation", "flipHorizontal", "flipVertical", "showAllResolutions",
                     "customWidth", "customHeight", "touchEnabled", "autoStartStreamingOnLaunch", "startupMode"]
         for key in keys {
             defaults.removeObject(forKey: keyPrefix + key)
         }
 
-        resolution = "1920x1200"
-        refreshRate = 120  // Default: highest FPS
+        resolution = "1024x768"
+        refreshRate = 30
         hiDPI = false
-        bitrate = 1000  // Default: 1000 Mbps
-        quality = "ultralow"  // Default: fastest encoding
+        bitrate = EInkModeProfile.bitrateMbps
+        quality = EInkModeProfile.quality
         gamingBoost = false
+        eInkReadingMode = true
         port = 54321
         rotation = 0
         flipHorizontal = false

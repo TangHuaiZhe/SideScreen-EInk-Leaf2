@@ -17,8 +17,9 @@ class VideoEncoder {
     private var quality: String = "medium"
     private var gamingBoost: Bool = false
     private var frameRate: Int = 60
+    private let eInkFrameProcessor: EInkFrameProcessor?
     private let stateLock = OSAllocatedUnfairLock(initialState: EncoderState())
-    init(width: Int, height: Int, codec: StreamCodec = .hevc, bitrateMbps: Int = 20, quality: String = "ultralow", gamingBoost: Bool = false, frameRate: Int = 60) {
+    init(width: Int, height: Int, codec: StreamCodec = .hevc, bitrateMbps: Int = 20, quality: String = "ultralow", gamingBoost: Bool = false, frameRate: Int = 60, eInkReadingMode: Bool = false) {
         self.width = width
         self.height = height
         self.codec = codec
@@ -26,6 +27,7 @@ class VideoEncoder {
         self.quality = gamingBoost ? "ultralow" : quality
         self.gamingBoost = gamingBoost
         self.frameRate = frameRate
+        self.eInkFrameProcessor = eInkReadingMode ? EInkFrameProcessor() : nil
         setupCompressionSession()
     }
 
@@ -137,6 +139,13 @@ class VideoEncoder {
     func encode(pixelBuffer: CVPixelBuffer, presentationTimeStamp: CMTime) {
         guard let session = compressionSession else { return }
 
+        let imageBuffer: CVPixelBuffer
+        if let processor = eInkFrameProcessor, let monochrome = processor.process(pixelBuffer) {
+            imageBuffer = monochrome
+        } else {
+            imageBuffer = pixelBuffer
+        }
+
         let duration = CMTime(value: 1, timescale: CMTimeScale(frameRate))
 
         // Use system uptime clock — MUST match DispatchTime.now().uptimeNanoseconds
@@ -155,7 +164,7 @@ class VideoEncoder {
 
         VTCompressionSessionEncodeFrame(
             session,
-            imageBuffer: pixelBuffer,
+            imageBuffer: imageBuffer,
             presentationTimeStamp: presentationTimeStamp,
             duration: duration,
             frameProperties: frameProperties,

@@ -73,6 +73,7 @@ class ScreenCapture {
     private var currentQuality: String = "medium"
     private var currentGamingBoost: Bool = false
     private var currentFrameRate: Int = 60
+    private var currentEInkReadingMode = false
 
     // Encoding pipeline state (captured by frame handler closure)
     private var encodeQueue: DispatchQueue?
@@ -410,13 +411,14 @@ class ScreenCapture {
 
     // MARK: - Start streaming
 
-    func startStreaming(to server: StreamingServer?, bitrateMbps: Int = 20, quality: String = "medium", gamingBoost: Bool = false, frameRate: Int = 60) {
+    func startStreaming(to server: StreamingServer?, bitrateMbps: Int = 20, quality: String = "medium", gamingBoost: Bool = false, frameRate: Int = 60, eInkReadingMode: Bool = false) {
         // Save parameters for potential restart
         currentServer = server
         currentBitrateMbps = bitrateMbps
         currentQuality = quality
         currentGamingBoost = gamingBoost
         currentFrameRate = frameRate
+        currentEInkReadingMode = eInkReadingMode
 
         isStreaming = true
 
@@ -427,7 +429,7 @@ class ScreenCapture {
 
         let (width, height) = encodeSize(for: codec)
 
-        encoder = VideoEncoder(width: width, height: height, codec: codec, bitrateMbps: bitrateMbps, quality: quality, gamingBoost: gamingBoost, frameRate: frameRate)
+        encoder = VideoEncoder(width: width, height: height, codec: codec, bitrateMbps: bitrateMbps, quality: quality, gamingBoost: gamingBoost, frameRate: frameRate, eInkReadingMode: eInkReadingMode)
         encoder?.onEncodedFrame = { [weak server] data, timestamp, isKeyframe in
             server?.sendFrame(data, timestamp: timestamp, isKeyframe: isKeyframe)
         }
@@ -759,7 +761,7 @@ class ScreenCapture {
     private func rebuildEncoder() {
         let (width, height) = encodeSize(for: codec)
         let server = currentServer
-        let newEncoder = VideoEncoder(width: width, height: height, codec: codec, bitrateMbps: currentBitrateMbps, quality: currentQuality, gamingBoost: currentGamingBoost, frameRate: currentFrameRate)
+        let newEncoder = VideoEncoder(width: width, height: height, codec: codec, bitrateMbps: currentBitrateMbps, quality: currentQuality, gamingBoost: currentGamingBoost, frameRate: currentFrameRate, eInkReadingMode: currentEInkReadingMode)
         newEncoder.onEncodedFrame = { [weak server] data, timestamp, isKeyframe in
             server?.sendFrame(data, timestamp: timestamp, isKeyframe: isKeyframe)
         }

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **E-Ink Reading Mode.** The Mac host can stream monochrome NV12 at a text-focused 15 Hz, High quality, and 20 Mbps without changing the Android wire protocol. Touch remains an independent option and continues to use the existing macOS Accessibility-gated input path.
+
 ### Planned
 - mDNS auto-discovery for wireless mode
 - Audio streaming

@@ -210,7 +210,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.screenCapture?.updateEncoderSettings(
                     bitrateMbps: self.settings.effectiveBitrate,
                     quality: self.settings.effectiveQuality,
-                    gamingBoost: gamingBoost
+                    gamingBoost: self.settings.effectiveGamingBoost
                 )
             }
             .store(in: &cancellables)
@@ -219,7 +219,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Publishers.CombineLatest(settings.$bitrate, settings.$quality)
             .dropFirst()
             .sink { [weak self] bitrate, quality in
-                guard let self = self, self.settings.isRunning, !self.settings.gamingBoost else { return }
+                guard let self = self, self.settings.isRunning, !self.settings.gamingBoost, !self.settings.eInkReadingMode else { return }
                 print("⚙️ Settings updated: \(bitrate)Mbps, \(quality)")
                 self.screenCapture?.updateEncoderSettings(
                     bitrateMbps: bitrate,
@@ -287,6 +287,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     guard effective != self.lastAppliedRefreshRate else { return }
                     self.restartRunningServer(reason: "Refresh rate changed to \(effective) Hz")
                 }
+            }
+            .store(in: &cancellables)
+
+        settings.$eInkReadingMode
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] enabled in
+                guard let self = self else { return }
+                self.restartRunningServer(reason: "E-Ink Reading Mode \(enabled ? "enabled" : "disabled")")
             }
             .store(in: &cancellables)
     }
@@ -563,7 +572,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try virtualDisplayManager?.createDisplay(
                 width: size.width,
                 height: size.height,
-                refreshRate: settings.refreshRate,
+                refreshRate: settings.effectiveRefreshRate,
                 hiDPI: settings.hiDPI,
                 name: "SideScreen"
             )
@@ -693,8 +702,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 to: streamingServer,
                 bitrateMbps: settings.effectiveBitrate,
                 quality: settings.effectiveQuality,
-                gamingBoost: settings.gamingBoost,
-                frameRate: settings.effectiveRefreshRate
+                gamingBoost: settings.effectiveGamingBoost,
+                frameRate: settings.effectiveRefreshRate,
+                eInkReadingMode: settings.eInkReadingMode
             )
 
             await MainActor.run {
