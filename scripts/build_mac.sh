@@ -96,9 +96,10 @@ cat > "$APP_DIR/Contents/Info.plist" << EOF
 </plist>
 EOF
 
-# Ad-hoc code sign to prevent Gatekeeper "damaged" error
-echo "Code signing (ad-hoc)..."
-codesign --force --deep --sign - --entitlements "$ROOT_DIR/MacHost/SideScreen.entitlements" "$APP_DIR"
+# Prefer a stable local Apple Development identity so macOS privacy permissions
+# survive rebuilds. The helper falls back to ad-hoc signing when unavailable.
+echo "Code signing..."
+"$SCRIPT_DIR/codesign-app.sh" "$APP_DIR"
 echo "  ✓ App signed"
 
 echo ""
