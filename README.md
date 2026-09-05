@@ -4,20 +4,20 @@
 
 <img src="resources/logo/sidescreen-icon.png" alt="Side Screen" width="128"/>
 
-<h1>Side Screen</h1>
+<h1>SideScreen E-Ink</h1>
 
-<p><em>Turn your Android tablet into a second display for macOS — USB-C or wireless over WiFi</em></p>
+<p><em>Turn a BOOX or Android e-ink reader into a readable macOS second display over USB-C</em></p>
 
 <p>
-  <img src="https://img.shields.io/github/v/release/tranvuongquocdat/SideScreen?style=for-the-badge&label=version&color=blue" alt="Version">
-  <a href="https://github.com/tranvuongquocdat/SideScreen/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/tranvuongquocdat/SideScreen?style=for-the-badge&color=34C759" alt="License">
+  <img src="https://img.shields.io/github/v/release/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&label=version&color=blue" alt="Version">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&color=34C759" alt="License">
   </a>
-  <a href="https://github.com/tranvuongquocdat/SideScreen/stargazers">
-    <img src="https://img.shields.io/github/stars/tranvuongquocdat/SideScreen?style=for-the-badge&color=FF9500" alt="Stars">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/stargazers">
+    <img src="https://img.shields.io/github/stars/TangHuaiZhe/SideScreen-EInk?style=for-the-badge&color=FF9500" alt="Stars">
   </a>
-  <a href="https://github.com/tranvuongquocdat/SideScreen/releases">
-    <img src="https://img.shields.io/github/downloads/tranvuongquocdat/SideScreen/total?style=for-the-badge&color=8E44AD&label=downloads" alt="Downloads">
+  <a href="https://github.com/TangHuaiZhe/SideScreen-EInk/releases">
+    <img src="https://img.shields.io/github/downloads/TangHuaiZhe/SideScreen-EInk/total?style=for-the-badge&color=8E44AD&label=downloads" alt="Downloads">
   </a>
 </p>
 
@@ -38,6 +38,8 @@
 ---
 
 ## About
+
+This is an e-ink-focused fork of [tranvuongquocdat/SideScreen](https://github.com/tranvuongquocdat/SideScreen), optimized and tested with the BOOX Leaf 2. E-Ink Reading Mode uses a 1024×768 virtual display at a macOS-compatible 30 Hz while capturing and encoding at 15 FPS, converts frames to grayscale, and keeps touch control optional.
 
 Side Screen brings true second-display functionality to your Android tablet — over USB-C cable for the lowest latency, or wirelessly over WiFi after a one-time QR pair. Something macOS doesn't natively support either way.
 
@@ -118,7 +120,7 @@ Run a Mac with no display of its own — a Mac Studio or Mini on the go, or a la
 
 ## Installation
 
-Download the latest release from [**GitHub Releases**](https://github.com/tranvuongquocdat/SideScreen/releases):
+Download the latest release from [**GitHub Releases**](https://github.com/TangHuaiZhe/SideScreen-EInk/releases):
 
 - **macOS**: Download `.dmg`, open it, drag Side Screen to Applications
 - **Android**: Download `.apk`, install on your tablet (enable "Unknown sources" if needed). Port forwarding is handled automatically by the Mac app.
@@ -146,7 +148,7 @@ Download the latest release from [**GitHub Releases**](https://github.com/tranvu
 <summary><strong>Build from source (for developers)</strong></summary>
 
 ```bash
-git clone https://github.com/tranvuongquocdat/SideScreen.git
+git clone https://github.com/TangHuaiZhe/SideScreen-EInk.git
 cd SideScreen
 
 # macOS
@@ -255,8 +257,8 @@ Grant Screen Recording permission: **System Preferences → Privacy & Security �
 Contributions are welcome!
 
 - ⭐ **Star** this repo to help others discover it
-- 🐛 **Report bugs** via [Issues](https://github.com/tranvuongquocdat/SideScreen/issues)
-- 💡 **Suggest features** via [Issues](https://github.com/tranvuongquocdat/SideScreen/issues)
+- 🐛 **Report bugs** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk/issues)
+- 💡 **Suggest features** via [Issues](https://github.com/TangHuaiZhe/SideScreen-EInk/issues)
 - 🔧 **Submit PRs** — see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
@@ -287,6 +289,6 @@ If Side Screen is useful to you, consider supporting development:
 
 Made with ❤️ by **Tran Vuong Quoc Dat**
 
-[Report Bug](https://github.com/tranvuongquocdat/SideScreen/issues) · [Request Feature](https://github.com/tranvuongquocdat/SideScreen/issues) · [Discussions](https://github.com/tranvuongquocdat/SideScreen/discussions)
+[Report Bug](https://github.com/TangHuaiZhe/SideScreen-EInk/issues) · [Request Feature](https://github.com/TangHuaiZhe/SideScreen-EInk/issues) · [Discussions](https://github.com/TangHuaiZhe/SideScreen-EInk/discussions)
 
 </div>
